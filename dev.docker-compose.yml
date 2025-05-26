@@ -6,7 +6,6 @@ services:
     env_file:
       - .env
     build: .
-    #    command: ls && python src/main.py
     command: uvicorn src.main:app --host 0.0.0.0 --port 8001 --reload
     ports:
       - "8001:8001"

@@ -1,1 +1,50 @@
+version: '3.8'
 
+services:
+  test-formatter-service:
+    container_name: test-formatter-service
+    env_file:
+      - ../.env
+    build: ../.
+    command: uvicorn src.main:app --host 0.0.0.0 --port 8001 --reload
+    ports:
+      - "8001:8001"
+    volumes:
+      - .././:/usr/src/app
+      - formatter_logs:/usr/src/app/logs/formatting
+
+  test-formatter-celery-service:
+    build: ../.
+    container_name: test-formatter-celery-service
+    env_file:
+      - ../.env
+    command: celery --app=src.celery.configs.app worker -l INFO -B
+    volumes:
+      - .././:/usr/src/app
+      - celery_logs:/usr/src/app/logs/celery
+
+  test-redis:
+    container_name: test-redis
+    image: redis:latest
+    ports:
+      - 6379:6379
+    restart: always
+
+  tests:
+    container_name: tests
+    env_file:
+      - ../.env.test
+    build:
+      context: ../.
+    volumes:
+      - ../.:/usr/src/app
+    entrypoint: >
+      sh -c "
+      pytest tests/src/
+      "
+    depends_on:
+      - test-redis
+
+volumes:
+  formatter_logs:
+  celery_logs:
