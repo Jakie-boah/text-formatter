@@ -12,6 +12,7 @@ services:
     volumes:
       - ./:/usr/src/app
       - formatter_logs:/usr/src/app/logs/formatting
+      - celery_logs:/usr/src/app/logs/celery
 
   formatter-celery-service:
     build: .
@@ -21,7 +22,6 @@ services:
     command: celery --app=src.celery.configs.app worker -l INFO -B
     volumes:
       - ./:/usr/src/app
-      - celery_logs:/usr/src/app/logs/celery
 
   redis:
     container_name: redis
