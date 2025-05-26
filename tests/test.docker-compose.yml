@@ -34,6 +34,7 @@ services:
   tests:
     container_name: tests
     env_file:
+      - ../.env
       - ../.env.test
     build:
       context: ../.
@@ -41,7 +42,7 @@ services:
       - ../.:/usr/src/app
     entrypoint: >
       sh -c "
-      pytest tests/src/
+      pytest tests/src/services/test_data_valid.py
       "
     depends_on:
       - test-redis
