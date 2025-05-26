@@ -1,0 +1,9 @@
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "ANN",
+    "D",
+    "RUF001"
+]
+[tool.ruff]
+line-length = 120

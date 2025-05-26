@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  formatter-service:
+    container_name: formatter-service
+    env_file:
+      - .env
+    build: .
+    #    command: ls && python src/main.py
+    command: uvicorn src.main:app --host 0.0.0.0 --port 8001 --reload
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./:/usr/src/app
+      - formatter_logs:/usr/src/app/logs/formatting
+
+  formatter-celery-service:
+    build: .
+    container_name: formatter-celery-service
+    env_file:
+      - .env
+    command: celery --app=src.celery.configs.app worker -l INFO -B
+    volumes:
+      - ./:/usr/src/app
+      - celery_logs:/usr/src/app/logs/celery
+
+  redis:
+    container_name: redis
+    image: redis:latest
+    ports:
+      - 6379:6379
+    restart: always
+
+
+volumes:
+  formatter_logs:
+  celery_logs:
