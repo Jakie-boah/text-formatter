@@ -11,6 +11,7 @@ click-repl==0.3.0
 fastapi==0.115.12
 h11==0.16.0
 idna==3.10
+iniconfig==2.1.0
 kombu==5.5.3
 loguru==0.7.3
 mypy_extensions==1.1.0
@@ -18,9 +19,11 @@ orjson==3.10.18
 packaging==25.0
 pathspec==0.12.1
 platformdirs==4.3.8
+pluggy==1.6.0
 prompt_toolkit==3.0.51
 pydantic==2.11.5
 pydantic_core==2.33.2
+pytest==8.3.5
 python-dateutil==2.9.0.post0
 redis==6.1.0
 ruff==0.11.11
@@ -33,3 +36,8 @@ tzdata==2025.2
 uvicorn==0.34.2
 vine==5.1.0
 wcwidth==0.2.13
+pytest==8.3.5
+pytest-asyncio==0.26.0
+pytest-cov==6.1.1
+python-dateutil==2.9.0.post0
+python-dotenv==1.1.0
