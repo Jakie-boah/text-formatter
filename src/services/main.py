@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from typing import Literal
+from src.db.manager import AsyncPGManager
 
 from pydantic import BaseModel, field_validator
 
-from src.db.pool import db_manager
 from src.db.repository import PromptRepository
 from src.services.gpt import GPTRequests
 
@@ -41,9 +41,7 @@ class TextFormatter(ABC):
     MAX_TRIES = 5
 
     def __init__(
-        self,
-        news: NewsData,
-        configs: FormattingData,
+        self, news: NewsData, configs: FormattingData, db_manager: AsyncPGManager
     ):
         self.news = news
         self.configs = configs
