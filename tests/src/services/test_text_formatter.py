@@ -1,9 +1,10 @@
-import pytest
-from src.services.connections.telegram import Telegram
-from src.services.main import NewsData, FormattingData
 import faker
-from src.services.gpt import GPTRequests
+import pytest
 from loguru import logger
+
+from src.services.connections.telegram import Telegram
+from src.services.gpt import GPTRequests
+from src.services.main import FormattingData, NewsData
 
 fake = faker.Faker()
 
@@ -40,7 +41,7 @@ def mocks(monkeypatch):
 
     monkeypatch.setattr(GPTRequests, "adapt_text", mock_adapt_text)
     monkeypatch.setattr(
-        GPTRequests, "translate_if_necessary", mock_translate_if_necessary
+        GPTRequests, "translate_if_necessary", mock_translate_if_necessary,
     )
 
 

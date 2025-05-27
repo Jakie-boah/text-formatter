@@ -1,5 +1,6 @@
-import pytest
 import asyncpg
+import pytest
+
 from src.db.manager import AsyncPGManager
 from src.db.pool import DB_DSN
 

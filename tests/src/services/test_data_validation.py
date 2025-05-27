@@ -1,12 +1,13 @@
 import asyncio
 import json
-
-from src.services.main import NewsData, FormattingData
-import aiohttp
 import os
+
+import aiohttp
 import pytest
 from dotenv import load_dotenv
 from loguru import logger
+
+from src.services.main import FormattingData, NewsData
 
 HEADERS = {"X-API-Key": os.environ.get("NEURON_SERVER_KEY")}
 
@@ -35,7 +36,7 @@ async def check_task(task_id):
 
 @pytest.mark.asyncio
 async def test_formatting_data():
-    data = FormattingData(language="en", extra_text_after_formatting="Hello", extra_prompt='bla')
+    data = FormattingData(language="en", extra_text_after_formatting="Hello", extra_prompt="bla")
     assert data.extra_text_after_formatting == "\nHello\n"
     assert data.extra_prompt == "\nbla\n"
 
