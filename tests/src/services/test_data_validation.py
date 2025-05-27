@@ -1,7 +1,7 @@
 import asyncio
 import json
 
-from src.services.main import NewsData
+from src.services.main import NewsData, FormattingData
 import aiohttp
 import os
 import pytest
@@ -34,7 +34,15 @@ async def check_task(task_id):
 
 
 @pytest.mark.asyncio
-async def test_data_validations():
+async def test_formatting_data():
+    data = FormattingData(language="en", extra_text_after_formatting="Hello", extra_prompt='bla')
+    assert data.extra_text_after_formatting == "\nHello\n"
+    assert data.extra_prompt == "\nbla\n"
+
+
+@pytest.mark.asyncio
+@pytest.mark.skip
+async def test_data_validation_newsfeed():
     load_dotenv(dotenv_path="../../../.env")
 
     headers = {"X-API-Key": os.getenv("NEURON_SERVER_KEY")}
@@ -56,15 +64,15 @@ async def test_data_validations():
 
 @pytest.mark.asyncio
 @pytest.mark.skip
-async def test_data_validation1212s():
+async def test_data_validation_article():
     load_dotenv(dotenv_path="../../../.env")
 
     headers = {"X-API-Key": os.getenv("NEURON_SERVER_KEY")}
     url = os.getenv("PROD_URL") + "metaconnect/articlesfeed"
 
     async with aiohttp.ClientSession() as session:
-        json = {"article_type": 1, "articlesfeed": 580}
-        async with session.post(url, json=json, headers=headers) as response:
+        json_ = {"article_type": 1, "articlesfeed": 610}
+        async with session.post(url, json=json_, headers=headers) as response:
             assert response.status == 200
 
             data = await response.json()

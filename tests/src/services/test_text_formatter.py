@@ -27,3 +27,4 @@ async def test_text_formatter(news, configs):
 
     assert formatter.news == news
     assert formatter.configs == configs
+    assert formatter.format_type == configs.format_type
