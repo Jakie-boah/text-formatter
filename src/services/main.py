@@ -1,8 +1,12 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
+from typing import Literal
+
 from pydantic import BaseModel, field_validator
-from typing import Literal, Optional
+
+from src.db.pool import db_manager
+from src.db.repository import PromptRepository
 from src.services.gpt import GPTRequests
 
 
@@ -13,8 +17,8 @@ class NewsData(BaseModel):
     publisher: str
     description: str
     text: str
-    img: str | None = None
-    summary: Optional[str] = None
+    img: str | None = ""
+    summary: str | None = ""
 
 
 class FormattingData(BaseModel):
@@ -24,7 +28,7 @@ class FormattingData(BaseModel):
     extra_text_after_formatting: str | None = ""
 
     @field_validator("extra_prompt", "extra_text_after_formatting")
-    def ensure_newlines_if_not_empty(cls, v):
+    def ensure_newlines_if_not_empty(cls, v):  # noqa: N805
         if v and not v.startswith("\n"):
             v = f"\n{v}"
         if v and not v.endswith("\n"):
@@ -33,6 +37,9 @@ class FormattingData(BaseModel):
 
 
 class TextFormatter(ABC):
+
+    MAX_TRIES = 5
+
     def __init__(
         self,
         news: NewsData,
@@ -41,6 +48,7 @@ class TextFormatter(ABC):
         self.news = news
         self.configs = configs
         self.gpt = GPTRequests(language=self.configs.language)
+        self.prompt_repository = PromptRepository(db_manager)
 
     @abstractmethod
     async def format(self):
@@ -65,3 +73,7 @@ class TextFormatter(ABC):
     @property
     def extra_msg(self):
         return self.configs.extra_text_after_formatting
+
+    @property
+    def extra_prompt(self):
+        return self.configs.extra_prompt

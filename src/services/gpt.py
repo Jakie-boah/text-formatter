@@ -38,7 +38,23 @@ class GPTRequests:
 
     @handle_openai_requests()
     async def adapt_text(self, prompt, text):
-        pass
+        response = await client.chat.completions.create(
+            model=MODEL,
+            messages=[
+                {
+                    "role": "system",
+                    "content": "You are a helpful assistant for rewriting texts.",
+                },
+                {
+                    "role": "user",
+                    "content": f"{prompt}\n "
+                    f"Make sure that result fits this language {self.language}.\n"
+                    f"{text}",
+                },
+            ],
+            temperature=1.0,
+        )
+        return response.choices[0].message.content.strip()
 
     @handle_openai_requests()
     async def translate_if_necessary(self, text):
@@ -52,7 +68,8 @@ class GPTRequests:
                 {
                     "role": "user",
                     "content": f"Translate the following text with almost no loss of volume into {self.language}. "
-                    f"Most important thing, translate it if it is necessary, if given sentence is already written in this language - just return it"
+                    f"Most important thing, translate it if it is necessary, "
+                               f"if given sentence is already written in this language - just return it"
                     f"Just write translated text, thank you",
                 },
                 {

@@ -1,6 +1,7 @@
-from src.services.main import TextFormatter
 from loguru import logger
-from src.db.repository import PromptRepository
+
+from src.services.exceptions import ErrorMessages, MaxCounterError
+from src.services.main import TextFormatter
 
 
 class Telegram(TextFormatter):
@@ -16,7 +17,7 @@ class Telegram(TextFormatter):
 
     async def _adapt_text(self):
 
-        prompt = self.get_prompt()
+        prompt = await self.get_prompt()
 
         adapted_text = await self.gpt.adapt_text(prompt, self.news.text)
 
@@ -25,12 +26,10 @@ class Telegram(TextFormatter):
         while True:
             if (
                 len(adapted_text) > self.MAX_LENGTH
-                or len(adapted_text) < self.MAX_LENGTH
+                or len(adapted_text) < self.MAX_LENGTH / 2
             ):
-                if counter >= 5:
-                    raise Exception(
-                        "Превышено кол-во запросов к нейронке - не получилось войти в лимит по кол-ву символов"
-                    )
+                if counter >= self.MAX_TRIES:
+                    raise MaxCounterError(ErrorMessages.MAX_TRIES.value)
 
                 logger.info(f"Очень большой текст для Telegram - ({len(adapted_text)})")
                 logger.info("Прошу сгенерировать еще раз")
@@ -45,10 +44,10 @@ class Telegram(TextFormatter):
         return adapted_text
 
     async def get_prompt(self) -> str:
-        # получаю из бд промпт + добавляю сверху разную шляпу
 
-        telegram_prompt = await PromptRepository.get_prompt(
-            "Telegram", self.format_type
+        telegram_prompt = await self.prompt_repository.get_prompt(
+            "Telegram",
+            self.format_type,
         )
-        telegram_prompt += self.configs.extra_prompt
+        telegram_prompt += self.extra_prompt
         return telegram_prompt

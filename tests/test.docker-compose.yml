@@ -42,11 +42,10 @@ services:
       - ../.:/usr/src/app
     entrypoint: >
       sh -c "
-      pytest tests/src/services/test_gpt.py
+      pytest tests/src/db/test_pool.py
       "
     depends_on:
       - test-redis
-
 
 volumes:
   formatting_logs:
