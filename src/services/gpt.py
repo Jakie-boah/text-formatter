@@ -8,7 +8,6 @@ MODEL = "gpt-4.1-mini"
 
 API_KEY = os.environ.get(
     "OPENAI_API_KEY",
-    "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",
 )
 
 client = openai.AsyncOpenAI(api_key=API_KEY)
