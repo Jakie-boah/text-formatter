@@ -7,7 +7,7 @@ import pytest
 from dotenv import load_dotenv
 from loguru import logger
 
-from src.services.main import FormattingData, NewsData
+from src.services.text import FormattingData, NewsData
 
 HEADERS = {"X-API-Key": os.environ.get("NEURON_SERVER_KEY")}
 
