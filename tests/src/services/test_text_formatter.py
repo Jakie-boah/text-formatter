@@ -4,7 +4,7 @@ from loguru import logger
 
 from src.services.exceptions import MaxCounterError
 from src.services.gpt import GPTRequests
-from src.services.text import FormattingData, NewsData
+from src.models.news import NewsData, FormattingData
 from src.db.repository import PromptRepository
 from src.services.connections import *
 
