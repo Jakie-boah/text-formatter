@@ -1,0 +1,225 @@
+<div class="neuron-body">
+
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .none {
+            display: none;
+        }
+
+        .neuron-body {
+            font-family: 'Manrope', sans-serif !important;
+        }
+
+        .neuron-main-banner {
+            width: 100%;
+        }
+
+        .neuron-main-banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .neuron-h1 {
+            font-family: 'Manrope', sans-serif;
+            font-size: 36px;
+            font-weight: 700;
+            color: #333;
+            line-height: normal;
+            margin: 20px 0 35px;
+        }
+
+        .neuron-h3 {
+            font-family: 'Manrope', sans-serif;
+            font-size: 25px;
+            font-weight: 500;
+            line-height: 26px;
+            margin: 0 0 15px 0;
+            color: #1B193F;
+        }
+
+        .neuron-p {
+            font-family: 'Manrope', sans-serif;
+            font-size: 18px;
+            font-weight: 400;
+            line-height: 130%;
+            margin-top: 0;
+            margin-bottom: 20px;
+            color: #1B193F;
+            max-width: 100%;
+        }
+
+        .neuron-img {
+            float: right;
+            width: 30%;
+            object-fit: cover;
+            border-radius: 10px;
+            margin: 0 0 40px 40px;
+        }
+
+        .neuron-wrapper {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding: 20px 0;
+        }
+
+        .neuron-main {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            margin-bottom: 20px;
+        }
+
+        .neuron-row {
+            margin-bottom: 25px;
+            /* Отступ между всеми neuron-row */
+        }
+
+        .neuron-row.no-image {
+            margin-bottom: 50px;
+            /* Увеличенный отступ, если у верхнего нет изображения */
+        }
+
+        .neuron-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+            height: 40px;
+            margin: 30px 0;
+        }
+
+        .neuron-footer__left {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .neuron-footer p {
+            margin: 0;
+        }
+
+        .neuron-img-container {
+            height: 250px;
+            min-width: 250px;
+            border-radius: 10px;
+            border: 1px solid #C0C0C0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .neuron-info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .neuron-link {
+            color: #0650BE;
+            text-decoration: underline;
+        }
+
+        .neuron-time {
+            font-weight: 500;
+            color: #686F7B;
+            margin: 0;
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+
+        .neuron-news-video {
+            width: 40%;
+            margin: 0 auto 40px;
+        }
+
+        .is-layout-constrained > :where(:not(.alignleft):not(.alignright):not(.alignfull)) {
+            max-width: 1200px !important;
+        }
+
+        @media (max-width: 520px) {
+            .neuron-h1 {
+                font-size: 22px;
+                margin: 20px 0 20px;
+            }
+
+            .neuron-p {
+                font-size: 14px;
+            }
+
+            .neuron-img {
+                margin: 0 0 20px 20px;
+            }
+
+            .neuron-footer__left {
+                font-size: 12px;
+            }
+
+            .neuron-wrapper {
+                padding: 20px 0;
+            }
+
+            .neuron-news-video {
+                width: 100%;
+            }
+        }
+    </style>
+
+    <div class="neuron-wrapper">
+        <main class="neuron-main">
+            <div class="neuron-row">
+                <img class="neuron-img" src="{{ image }}">
+                <p class="neuron-p">
+                    {{ full_text|linebreaksbr }}
+                </p>
+            </div>
+            <div class="neuron-info">
+                <a class="neuron-link" href="{{ news_source }}">
+                    Source
+                </a>
+
+                <p class="neuron-p">
+                    <!-- Для SEO Boost -->
+                </p>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const img = document.querySelector('.neuron-main-banner img')
+        const background = document.querySelector('.neuron-main-banner')
+
+        if (img) {
+            const imgSrc = img.src;
+
+            if (imgSrc != "None" && imgSrc) {
+                background.style.setProperty('--blur-bg', 'url(' + imgSrc + ')');
+            } else {
+                img.classList.add('none')
+            }
+        }
+
+        const neuronImg = document.querySelectorAll('.neuron-img');
+
+        console.log('neuronImg', neuronImg);
+
+
+        neuronImg.forEach((img) => {
+            console.log(img.getAttribute('src'));
+
+            if (img.getAttribute('src') == "None") {
+                img.classList.add('none');
+            }
+        });
+    </script>
+</div>

@@ -107,3 +107,22 @@ async def test_twitter_formatting_different_length(news, configs, mocks, db_mana
     configs.extra_text_after_formatting = "\nExtra MSG\n"
     formatter = Twitter(news=news, configs=configs, db_manager=db_manager)
     assert formatter.max_length == 280 - len(configs.extra_text_after_formatting) - 10
+
+
+@pytest.mark.asyncio
+async def test_website_format(news, configs, mocks, db_manager):
+    news = news(5000)
+    configs.extra_prompt = "\nExtra Prompt\n"
+    configs.extra_text_after_formatting = ""  # Website шаблон сам управляет этим
+    formatter = Website(news=news, configs=configs, db_manager=db_manager)
+
+    prompt = await formatter.get_prompt()
+    assert prompt == "Prompt for Website\nExtra Prompt\n"
+
+    html = await formatter.format()
+    logger.info(html)
+
+    # Проверяем, что HTML содержит основные вставки
+    assert '<div class="neuron-wrapper">' in html
+    assert news.url in html
+    assert news.text[:50] in html or news.text[-50:] in html
