@@ -42,7 +42,7 @@ services:
       - ../.:/usr/src/app
     entrypoint: >
       sh -c "
-      pytest tests/src/services/test_get_formatter_instances.py
+      pytest tests/src/services/test_extra_msg.py
       "
     depends_on:
       - test-redis
