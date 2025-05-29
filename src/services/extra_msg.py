@@ -4,7 +4,7 @@ from loguru import logger
 
 class ExtraMsg:
     def __init__(self, data: ExtraMsgData):
-        self.data = data
+        self.news = data.news
         self.feed_record = data.feed_record
 
         if self.feed_record.seo_boost:
@@ -20,7 +20,7 @@ class ExtraMsg:
         if main_connection:
             parts.append(self.seo_boost_text)
             if self.feed_record.show_news_source:
-                parts.append(self.data.news.url)
+                parts.append(self.news.url)
 
             elif self.seo_boost_static_url:
                 parts.append(self.seo_boost_static_url)

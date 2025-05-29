@@ -13,8 +13,6 @@ class SeoBoost(BaseModel):
 
 
 class NewsFeed(BaseModel):
-    primary_logic: bool
-    feed_connections_length: int
     seo_boost: SeoBoost | None = None
     show_news_source: bool
     url_for_primary_connection: str | None = ""
