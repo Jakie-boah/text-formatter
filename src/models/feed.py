@@ -6,10 +6,8 @@ from src.models.news import NewsData
 
 
 class SeoBoost(BaseModel):
-    link_to_full_news: bool
     text: str | None = None
     static_url: str | None = None
-    prefix: str | None = None
 
 
 class NewsFeed(BaseModel):
