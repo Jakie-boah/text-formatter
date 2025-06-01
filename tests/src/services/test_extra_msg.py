@@ -1,5 +1,5 @@
 import pytest
-from src.services.extra_msg import ExtraMsg
+from src.services.extra_msg import ExtraMsgMainConnection, ExtraMsgSecondaryConnection
 from src.models.feed import SeoBoost, NewsFeed, ExtraMsgData
 from tests.src.services.test_text_formatter import news
 
@@ -25,8 +25,8 @@ def extra_msg(seo_boost_config, news):
 
 @pytest.mark.asyncio
 async def test_extra_seo_boost_msg_main_connection(extra_msg):
-    extra_msg_service = ExtraMsg(data=extra_msg)
-    result = extra_msg_service.build_msg(main_connection=True)
+    extra_msg_service = ExtraMsgMainConnection(data=extra_msg)
+    result = extra_msg_service.build_msg()
 
     expected = f"\n{extra_msg.feed_record.seo_boost.text}\n{extra_msg.news.url}\n"
     assert result == expected
@@ -34,15 +34,15 @@ async def test_extra_seo_boost_msg_main_connection(extra_msg):
 
 @pytest.mark.asyncio
 async def test_extra_seo_boost_msg_main_connection_false(extra_msg):
-    extra_msg_service = ExtraMsg(data=extra_msg)
-    result = extra_msg_service.build_msg(main_connection=False)
+    extra_msg_service = ExtraMsgSecondaryConnection(data=extra_msg)
+    result = extra_msg_service.build_msg()
     expected = f"\n{extra_msg.feed_record.seo_boost.text}\n{extra_msg.feed_record.seo_boost.static_url}\n"
 
     assert result == expected
 
     extra_msg.feed_record.seo_boost.static_url = ""
-    extra_msg_service = ExtraMsg(data=extra_msg)
-    result = extra_msg_service.build_msg(main_connection=False)
+    extra_msg_service = ExtraMsgSecondaryConnection(data=extra_msg)
+    result = extra_msg_service.build_msg()
     expected = f"\n{extra_msg.feed_record.seo_boost.text}\n{extra_msg.feed_record.url_for_primary_connection}\n"
     assert result == expected
 
@@ -50,10 +50,10 @@ async def test_extra_seo_boost_msg_main_connection_false(extra_msg):
 @pytest.mark.asyncio
 async def test_extra_msg_se_boost_empty(extra_msg):
     extra_msg.feed_record.seo_boost = None
-    extra_msg_service = ExtraMsg(data=extra_msg)
-    result = extra_msg_service.build_msg(main_connection=True)
+    extra_msg_service = ExtraMsgMainConnection(data=extra_msg)
+    result = extra_msg_service.build_msg()
     assert result == f"\n{extra_msg.news.url}\n"
 
-    extra_msg_service = ExtraMsg(data=extra_msg)
-    result = extra_msg_service.build_msg(main_connection=False)
+    extra_msg_service = ExtraMsgSecondaryConnection(data=extra_msg)
+    result = extra_msg_service.build_msg()
     assert result == f"\n{extra_msg.feed_record.url_for_primary_connection}\n"
