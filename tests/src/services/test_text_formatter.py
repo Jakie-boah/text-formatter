@@ -32,7 +32,7 @@ def news():
 
 @pytest.fixture
 def configs():
-    return FormattingData(language="English", format_type="default")
+    return FormattingData(language="English", format_type="newsfeed")
 
 
 @pytest.fixture

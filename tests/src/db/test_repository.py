@@ -5,7 +5,8 @@ from src.db.repository import PromptRepository
 
 
 @pytest.mark.asyncio
-async def test_repository(db_manager):
+@pytest.mark.parametrize("type_", ["newsfeed", "article", "video", "summarized"])
+async def test_repository(db_manager, type_):
     repository = PromptRepository(db_manager)
-    result = await repository.get_prompt(social="Telegram")
+    result = await repository.get_prompt(social="Telegram", format_type=type_)
     logger.info(result)

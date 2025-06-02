@@ -25,3 +25,13 @@ class Telegram(TextFormatter):
         )
         telegram_prompt += self.extra_prompt
         return telegram_prompt
+
+
+class TelegramArticle(Telegram):
+    async def get_prompt(self) -> str:
+        telegram_prompt = await self.prompt_repository.get_prompt(
+            social="Telegram",
+            format_type=self.format_type,
+        )
+        telegram_prompt += self.extra_prompt
+        return telegram_prompt

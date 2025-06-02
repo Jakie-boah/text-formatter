@@ -17,10 +17,9 @@ class BasePromptRepository(Repository):
         self.db = db_manager
         self.queries = PromptQueries()
 
-    async def get(self, *, social) -> str | None:
+    async def get(self, *, social, prompt_type) -> str | None:
         row = await self.db.fetchrow(
-            self.queries.get_prompt,
-            social,
+            self.queries.get_prompt, social, prompt_type
         )
         if row:
             return row["prompt"]
@@ -32,9 +31,6 @@ class PromptRepository(BasePromptRepository):
         self,
         *,
         social,
-        format_type: Literal["default", "summarized"] = "default",
+        format_type: Literal["summarized", "article", "newsfeed", "video"] = "newsfeed",
     ) -> str | None:
-
-        if format_type in {"default", "summarized"}:
-            return await self.get(social=social)
-        return None
+        return await self.get(social=social, prompt_type=format_type)

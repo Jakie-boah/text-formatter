@@ -73,7 +73,7 @@ class TextFormatter(ABC):
         pass
 
     @property
-    def format_type(self) -> Literal["default", "summarized"]:
+    def format_type(self) -> Literal["summarized", "article", "newsfeed", "video"]:
         return self.configs.format_type
 
     @property

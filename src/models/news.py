@@ -18,7 +18,7 @@ class NewsData(BaseModel):
 
 class FormattingData(BaseModel):
     language: str
-    format_type: Literal["default", "summarized"] = "default"
+    format_type: Literal["summarized", "article", "newsfeed", "video"] = "newsfeed"
     extra_prompt: str | None = ""
     extra_text_after_formatting: str | None = ""
 
