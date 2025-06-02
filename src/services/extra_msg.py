@@ -1,9 +1,7 @@
 from typing import TypeAlias
-
+from src.services.feed_backend import FeedBackend
 from loguru import logger
-import os
-from src.models.feed import ExtraMsgData, NewsFeed
-import aiohttp
+from src.models.feed import ExtraMsgData
 
 ExtraMsg: TypeAlias = str
 
@@ -55,8 +53,6 @@ class ExtraMsgSecondaryConnection(BaseExtraMsg):
         return "\n" + "\n".join(part for part in parts if part) + "\n" if parts else ""
 
 
-
-
 class ExtraMsgService:
     def __init__(self, feed_id, main_connection, news):
         self.feed_id = feed_id
@@ -64,7 +60,7 @@ class ExtraMsgService:
         self.news = news
 
     async def build_msg(self) -> ExtraMsg:
-        feed = await self._get_data_from_backend()
+        feed = await FeedBackend.get_formatting_data_for_feed(feed_id=self.feed_id)
         data = ExtraMsgData(feed_record=feed, news=self.news)
         if self.main_connection:
             return ExtraMsgMainConnection(data).build_msg()

@@ -6,6 +6,8 @@ from src.services.extra_msg import (
 )
 from src.models.feed import SeoBoost, NewsFeed, ExtraMsgData
 from tests.src.services.test_text_formatter import news
+from src.services.feed_backend import FeedBackend
+from loguru import logger
 
 
 @pytest.fixture()
@@ -64,5 +66,21 @@ async def test_extra_msg_se_boost_empty(extra_msg):
 
 
 @pytest.mark.asyncio
-async def test_extra_msg_service():
-    await ExtraMsgService(feed_id=999, status=True, news=news()).build_msg()
+@pytest.mark.parametrize("main", [True, False])
+async def test_extra_msg_service(news, monkeypatch, main):
+    fake_news_feed = NewsFeed(
+        show_news_source=True,
+        seo_boost=SeoBoost(text="test seo text", static_url="static-url.com"),
+    )
+
+    async def mock_get_formatting_data_for_feed(*, feed_id: int):
+        return fake_news_feed
+
+    monkeypatch.setattr(
+        FeedBackend,
+        "get_formatting_data_for_feed",
+        staticmethod(mock_get_formatting_data_for_feed),
+    )
+    service = ExtraMsgService(feed_id=999, main_connection=main, news=news())
+    result = await service.build_msg()
+    logger.info(result)

@@ -20,7 +20,7 @@ class FeedBackend:
         url = f"{FEED_BACKEND_URL}/api/v1/feed/formatting/{feed_id}/"
 
         async with aiohttp.ClientSession() as session:
-            async with session.get(url) as response:
+            async with session.get(url, headers=HEADERS) as response:
                 if response.status == 200:
                     data = await response.json()
                     logger.info("Response:", data)
