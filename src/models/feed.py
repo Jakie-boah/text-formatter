@@ -4,7 +4,6 @@ from typing import TYPE_CHECKING
 
 from pydantic import BaseModel
 
-from src.models.news import NewsData
 
 if TYPE_CHECKING:
     from src.models.news import NewsData
