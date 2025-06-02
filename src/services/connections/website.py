@@ -39,7 +39,27 @@ class Website(TextFormatter):
 
         website_prompt = await self.prompt_repository.get_prompt(
             social="Website",
-            format_type=self.format_type,
+            format_type="newsfeed",
+        )
+        website_prompt += self.extra_prompt
+        return website_prompt
+
+
+class WebsiteArticle(Website):
+    async def get_prompt(self) -> str:
+        website_prompt = await self.prompt_repository.get_prompt(
+            social="Website",
+            format_type="article",
+        )
+        website_prompt += self.extra_prompt
+        return website_prompt
+
+
+class WebsiteVideo(Website):
+    async def get_prompt(self) -> str:
+        website_prompt = await self.prompt_repository.get_prompt(
+            social="Website",
+            format_type="video",
         )
         website_prompt += self.extra_prompt
         return website_prompt

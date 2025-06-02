@@ -21,7 +21,7 @@ class Telegram(TextFormatter):
 
         telegram_prompt = await self.prompt_repository.get_prompt(
             social="Telegram",
-            format_type=self.format_type,
+            format_type="newsfeed",
         )
         telegram_prompt += self.extra_prompt
         return telegram_prompt
@@ -31,7 +31,17 @@ class TelegramArticle(Telegram):
     async def get_prompt(self) -> str:
         telegram_prompt = await self.prompt_repository.get_prompt(
             social="Telegram",
-            format_type=self.format_type,
+            format_type="article",
+        )
+        telegram_prompt += self.extra_prompt
+        return telegram_prompt
+
+
+class TelegramVideo(Telegram):
+    async def get_prompt(self) -> str:
+        telegram_prompt = await self.prompt_repository.get_prompt(
+            social="Telegram",
+            format_type="video",
         )
         telegram_prompt += self.extra_prompt
         return telegram_prompt

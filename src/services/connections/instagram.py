@@ -21,7 +21,29 @@ class Instagram(TextFormatter):
 
         insta_prompt = await self.prompt_repository.get_prompt(
             social="Instagram",
-            format_type=self.format_type,
+            format_type="newsfeed",
+        )
+        insta_prompt += self.extra_prompt
+        return insta_prompt
+
+
+class InstagramArticle(Instagram):
+    async def get_prompt(self) -> str:
+
+        insta_prompt = await self.prompt_repository.get_prompt(
+            social="Instagram",
+            format_type="article",
+        )
+        insta_prompt += self.extra_prompt
+        return insta_prompt
+
+
+class InstagramVideo(Instagram):
+    async def get_prompt(self) -> str:
+
+        insta_prompt = await self.prompt_repository.get_prompt(
+            social="Instagram",
+            format_type="video",
         )
         insta_prompt += self.extra_prompt
         return insta_prompt

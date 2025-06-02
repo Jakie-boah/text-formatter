@@ -62,7 +62,7 @@ async def test_text_formatter(news, configs, mocks, db_manager):
     configs.extra_prompt = "\nSome Extra Prompt\n"
     formatter = Telegram(news=news, configs=configs, db_manager=db_manager)
     repository = PromptRepository(db_manager)
-    result = await repository.get_prompt(social="Telegram", format_type="default")
+    result = await repository.get_prompt(social="Telegram", format_type="newsfeed")
 
     assert formatter.news == news
     assert formatter.configs == configs

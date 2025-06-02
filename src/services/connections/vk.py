@@ -21,7 +21,29 @@ class VK(TextFormatter):
 
         vk_prompt = await self.prompt_repository.get_prompt(
             social="VK",
-            format_type=self.format_type,
+            format_type="newsfeed",
+        )
+        vk_prompt += self.extra_prompt
+        return vk_prompt
+
+
+class VKArticle(VK):
+    async def get_prompt(self) -> str:
+
+        vk_prompt = await self.prompt_repository.get_prompt(
+            social="VK",
+            format_type="article",
+        )
+        vk_prompt += self.extra_prompt
+        return vk_prompt
+
+
+class VKVideo(VK):
+    async def get_prompt(self) -> str:
+
+        vk_prompt = await self.prompt_repository.get_prompt(
+            social="VK",
+            format_type="video",
         )
         vk_prompt += self.extra_prompt
         return vk_prompt

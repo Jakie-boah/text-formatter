@@ -6,12 +6,12 @@ from typing import TYPE_CHECKING, Literal
 from loguru import logger
 
 from src.db.repository import PromptRepository
-from src.models.news import NewsData, FormattingData
 from src.services.exceptions import ErrorMessages, MaxCounterError
 from src.services.gpt import GPTRequests
 
 if TYPE_CHECKING:
     from src.db.manager import AsyncPGManager
+    from src.models.news import FormattingData, NewsData
 
 
 class TextAdapter:

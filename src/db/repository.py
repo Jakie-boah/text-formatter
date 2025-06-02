@@ -19,7 +19,7 @@ class BasePromptRepository(Repository):
 
     async def get(self, *, social, prompt_type) -> str | None:
         row = await self.db.fetchrow(
-            self.queries.get_prompt, social, prompt_type
+            self.queries.get_prompt, social, prompt_type,
         )
         if row:
             return row["prompt"]

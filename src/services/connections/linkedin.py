@@ -21,7 +21,29 @@ class Linkedin(TextFormatter):
 
         linkedin_prompt = await self.prompt_repository.get_prompt(
             social="Linkedin",
-            format_type=self.format_type,
+            format_type="newsfeed",
+        )
+        linkedin_prompt += self.extra_prompt
+        return linkedin_prompt
+
+
+class LinkedinArticle(Linkedin):
+    async def get_prompt(self) -> str:
+
+        linkedin_prompt = await self.prompt_repository.get_prompt(
+            social="Linkedin",
+            format_type="article",
+        )
+        linkedin_prompt += self.extra_prompt
+        return linkedin_prompt
+
+
+class LinkedinVideo(Linkedin):
+    async def get_prompt(self) -> str:
+
+        linkedin_prompt = await self.prompt_repository.get_prompt(
+            social="Linkedin",
+            format_type="video",
         )
         linkedin_prompt += self.extra_prompt
         return linkedin_prompt

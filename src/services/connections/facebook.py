@@ -21,7 +21,27 @@ class Facebook(TextFormatter):
 
         facebook_prompt = await self.prompt_repository.get_prompt(
             social="Facebook",
-            format_type=self.format_type,
+            format_type="newsfeed",
         )
         facebook_prompt += self.extra_prompt
         return facebook_prompt
+
+
+class FacebookArticle(Facebook):
+    async def get_prompt(self) -> str:
+        telegram_prompt = await self.prompt_repository.get_prompt(
+            social="Facebook",
+            format_type="article",
+        )
+        telegram_prompt += self.extra_prompt
+        return telegram_prompt
+
+
+class FacebookVideo(Facebook):
+    async def get_prompt(self) -> str:
+        telegram_prompt = await self.prompt_repository.get_prompt(
+            social="Facebook",
+            format_type="video",
+        )
+        telegram_prompt += self.extra_prompt
+        return telegram_prompt

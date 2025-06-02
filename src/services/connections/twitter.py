@@ -23,7 +23,29 @@ class Twitter(TextFormatter):
 
         twitter_prompt = await self.prompt_repository.get_prompt(
             social="Twitter",
-            format_type=self.format_type,
+            format_type="newsfeed",
+        )
+        twitter_prompt += self.extra_prompt
+        return twitter_prompt
+
+
+class TwitterArticle(Twitter):
+    async def get_prompt(self) -> str:
+
+        twitter_prompt = await self.prompt_repository.get_prompt(
+            social="Twitter",
+            format_type="article",
+        )
+        twitter_prompt += self.extra_prompt
+        return twitter_prompt
+
+
+class TwitterVideo(Twitter):
+    async def get_prompt(self) -> str:
+
+        twitter_prompt = await self.prompt_repository.get_prompt(
+            social="Twitter",
+            format_type="video",
         )
         twitter_prompt += self.extra_prompt
         return twitter_prompt

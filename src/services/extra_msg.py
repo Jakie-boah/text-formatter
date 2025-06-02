@@ -1,7 +1,8 @@
-from src.models.feed import ExtraMsgData
-from loguru import logger
 from typing import TypeAlias
 
+from loguru import logger
+
+from src.models.feed import ExtraMsgData
 
 ExtraMsg: TypeAlias = str
 
