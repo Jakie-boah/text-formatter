@@ -1,5 +1,9 @@
 import pytest
-from src.services.extra_msg import ExtraMsgMainConnection, ExtraMsgSecondaryConnection
+from src.services.extra_msg import (
+    ExtraMsgMainConnection,
+    ExtraMsgSecondaryConnection,
+    ExtraMsgService,
+)
 from src.models.feed import SeoBoost, NewsFeed, ExtraMsgData
 from tests.src.services.test_text_formatter import news
 
@@ -57,3 +61,8 @@ async def test_extra_msg_se_boost_empty(extra_msg):
     extra_msg_service = ExtraMsgSecondaryConnection(data=extra_msg)
     result = extra_msg_service.build_msg()
     assert result == f"\n{extra_msg.feed_record.url_for_primary_connection}\n"
+
+
+@pytest.mark.asyncio
+async def test_extra_msg_service():
+    await ExtraMsgService(feed_id=999, status=True, news=news()).build_msg()
