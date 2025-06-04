@@ -1,7 +1,9 @@
 from typing import TypeAlias
-from src.services.feed_backend import FeedBackend
+
 from loguru import logger
+
 from src.models.feed import ExtraMsgData
+from src.services.feed_backend import FeedBackend
 
 ExtraMsg: TypeAlias = str
 
@@ -64,5 +66,4 @@ class ExtraMsgService:
         data = ExtraMsgData(feed_record=feed, news=self.news)
         if self.main_connection:
             return ExtraMsgMainConnection(data).build_msg()
-        else:
-            return ExtraMsgSecondaryConnection(data).build_msg()
+        return ExtraMsgSecondaryConnection(data).build_msg()
