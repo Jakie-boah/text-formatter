@@ -2,8 +2,6 @@ from __future__ import annotations
 
 from pydantic import BaseModel
 
-from src.models.news import NewsData  # noqa: TC001
-
 
 class SeoBoost(BaseModel):
     text: str | None = None
@@ -18,4 +16,4 @@ class NewsFeed(BaseModel):
 
 class ExtraMsgData(BaseModel):
     feed_record: NewsFeed
-    news: NewsData
+    news_source: str | None = ""

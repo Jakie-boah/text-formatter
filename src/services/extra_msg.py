@@ -10,7 +10,7 @@ ExtraMsg: TypeAlias = str
 
 class BaseExtraMsg:
     def __init__(self, data: ExtraMsgData):
-        self.news = data.news
+        self.news_source = data.news_source
         self.feed_record = data.feed_record
 
         if self.feed_record.seo_boost:
@@ -27,7 +27,7 @@ class ExtraMsgMainConnection(BaseExtraMsg):
         parts = [self.seo_boost_text]
 
         if self.feed_record.show_news_source:
-            parts.append(self.news.url)
+            parts.append(self.news_source)
 
         elif self.seo_boost_static_url:
             parts.append(self.seo_boost_static_url)
@@ -46,6 +46,10 @@ class ExtraMsgSecondaryConnection(BaseExtraMsg):
         parts = [self.seo_boost_text]
         if self.seo_boost_static_url:
             parts.append(self.seo_boost_static_url)
+
+        elif self.feed_record.show_news_source:
+            parts.append(self.news_source)
+
         else:
             parts.append(self.feed_record.url_for_primary_connection)
 
@@ -56,14 +60,14 @@ class ExtraMsgSecondaryConnection(BaseExtraMsg):
 
 
 class ExtraMsgService:
-    def __init__(self, feed_id, main_connection, news):
+    def __init__(self, feed_id, main_connection, news_source):
         self.feed_id = feed_id
         self.main_connection = main_connection
-        self.news = news
+        self.news_source = news_source
 
     async def build_msg(self) -> ExtraMsg:
         feed = await FeedBackend.get_formatting_data_for_feed(feed_id=self.feed_id)
-        data = ExtraMsgData(feed_record=feed, news=self.news)
+        data = ExtraMsgData(feed_record=feed, news=self.news_source)
         if self.main_connection:
             return ExtraMsgMainConnection(data).build_msg()
         return ExtraMsgSecondaryConnection(data).build_msg()
