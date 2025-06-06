@@ -1,73 +1,83 @@
+from abc import ABC, abstractmethod
 from typing import TypeAlias
 
 from loguru import logger
 
 from src.models.feed import ExtraMsgData
+from src.services.exceptions import ErrorMessages
 from src.services.feed_backend import FeedBackend
 
 ExtraMsg: TypeAlias = str
 
 
-class BaseExtraMsg:
+class BaseExtraMsg(ABC):
     def __init__(self, data: ExtraMsgData):
-        self.news_source = data.news_source
-        self.feed_record = data.feed_record
+        self._data = data
 
-        if self.feed_record.seo_boost:
-            self.seo_boost_static_url = data.feed_record.seo_boost.static_url
-            self.seo_boost_text = data.feed_record.seo_boost.text
-        else:
-            self.seo_boost_static_url = ""
-            self.seo_boost_text = ""
+    @property
+    def seo_boost_static_url(self) -> str:
+        seo_boost = self._data.feed_record.seo_boost
+        return seo_boost.static_url if seo_boost else ""
+
+    @property
+    def seo_boost_text(self) -> str:
+        seo_boost = self._data.feed_record.seo_boost
+        return seo_boost.text if seo_boost else ""
+
+    @property
+    def news_source(self) -> str:
+        return self._data.news_source
+
+    @property
+    def feed_record(self):
+        return self._data.feed_record
+
+    @abstractmethod
+    def build_msg(self) -> ExtraMsg:
+        raise NotImplementedError(ErrorMessages.ABS_METHOD_NOT_IMPLEMENTED.value)
+
+    @staticmethod
+    def _format(parts: list[str]) -> ExtraMsg:
+        filtered_parts = [part for part in parts if part]
+        logger.info("extra msg:")
+        logger.info(filtered_parts)
+        return "\n" + "\n".join(filtered_parts) + "\n" if filtered_parts else ""
 
 
 class ExtraMsgMainConnection(BaseExtraMsg):
-
     def build_msg(self) -> ExtraMsg:
         parts = [self.seo_boost_text]
+        if self.feed_record.show_news_source:
+            parts.append(self.news_source)
+        if self.seo_boost_static_url:
+            parts.append(self.seo_boost_static_url)
+        return self._format(parts)
+
+
+class ExtraMsgSecondaryConnection(BaseExtraMsg):
+    def build_msg(self) -> ExtraMsg:
+        parts = [self.seo_boost_text]
+
+        if self.seo_boost_static_url:
+            parts.append(self.seo_boost_static_url)
 
         if self.feed_record.show_news_source:
             parts.append(self.news_source)
 
-        elif self.seo_boost_static_url:
-            parts.append(self.seo_boost_static_url)
-        else:
-            pass
+        parts.append(self.feed_record.url_for_primary_connection)
 
-        logger.info("extra msg:")
-        logger.info([part for part in parts if part])
-
-        return "\n" + "\n".join(part for part in parts if part) + "\n" if parts else ""
-
-
-class ExtraMsgSecondaryConnection(BaseExtraMsg):
-
-    def build_msg(self) -> ExtraMsg:
-        parts = [self.seo_boost_text]
-        if self.seo_boost_static_url:
-            parts.append(self.seo_boost_static_url)
-
-        elif self.feed_record.show_news_source:
-            parts.append(self.news_source)
-
-        else:
-            parts.append(self.feed_record.url_for_primary_connection)
-
-        logger.info("extra msg:")
-        logger.info([part for part in parts if part])
-
-        return "\n" + "\n".join(part for part in parts if part) + "\n" if parts else ""
+        return self._format(parts)
 
 
 class ExtraMsgService:
-    def __init__(self, feed_id, main_connection, news_source):
+    def __init__(self, *, feed_id: int, main_connection: bool, news_source: str):
         self.feed_id = feed_id
         self.main_connection = main_connection
         self.news_source = news_source
 
     async def build_msg(self) -> ExtraMsg:
         feed = await FeedBackend.get_formatting_data_for_feed(feed_id=self.feed_id)
-        data = ExtraMsgData(feed_record=feed, news=self.news_source)
+        data = ExtraMsgData(feed_record=feed, news_source=self.news_source)
         if self.main_connection:
             return ExtraMsgMainConnection(data).build_msg()
         return ExtraMsgSecondaryConnection(data).build_msg()
