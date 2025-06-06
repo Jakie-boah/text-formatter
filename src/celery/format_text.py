@@ -5,6 +5,8 @@ from src.services.main import get_text_formatter
 from src.models.news import NewsData
 import asyncio
 
+# TODO: хуйня это не нужно будет
+
 
 @shared_task
 def format_text(feed_id: int, connection_main_status: bool, news_data: dict):
