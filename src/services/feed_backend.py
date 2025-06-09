@@ -57,6 +57,7 @@ class FeedBackend:
             if response.status == HTTP_OK:
                 data = await response.json()
                 logger.info("Response:", data)
+                data.pop("image_prompt")
                 return FeedPrompt(**data)
             text = await response.text()
             raise FeedBackendError(ERROR_MSG.format(response.status, text))
