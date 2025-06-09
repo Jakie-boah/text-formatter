@@ -5,6 +5,7 @@ WORKDIR /usr/src/app
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
+ENV PYTHONPATH=/usr/src/app
 
 RUN mkdir -p /usr/src/app/logs/formatting && \
     mkdir -p /usr/src/app/logs/celery && \

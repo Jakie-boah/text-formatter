@@ -5,7 +5,7 @@ DB_DSN = f"postgresql://{settings.user}:{settings.password}@{settings.host}:{set
 db_manager = AsyncPGManager(DB_DSN)
 
 
-async def get_db():
+async def get_db() -> AsyncPGManager:
     await db_manager.connect()
     try:
         yield db_manager
