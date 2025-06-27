@@ -1,8 +1,8 @@
 import asyncpg
 import pytest
 
-from src.db.manager import AsyncPGManager
-from src.db.pool import DB_DSN
+from src.infrastructure.db.manager import AsyncPGManager
+from src.infrastructure.db.pool import DB_DSN
 
 
 @pytest.mark.asyncio

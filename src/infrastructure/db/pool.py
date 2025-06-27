@@ -1,5 +1,5 @@
 from src.configs.settings import settings
-from src.db.manager import AsyncPGManager
+from src.infrastructure.db.manager import AsyncPGManager
 
 DB_DSN = f"postgresql://{settings.user}:{settings.password}@{settings.host}:{settings.port}/{settings.db}"
 db_manager = AsyncPGManager(DB_DSN)

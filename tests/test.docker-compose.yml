@@ -14,16 +14,6 @@ services:
       - formatting_logs:/usr/src/app/logs/formatting
       - celery_logs:/usr/src/app/logs/celery
 
-
-  test-formatter-celery-service:
-    build: ../.
-    container_name: test-formatter-celery-service
-    env_file:
-      - ../.env
-    command: celery --app=src.celery.configs.app worker -l INFO -B
-    volumes:
-      - ../.:/usr/src/app
-
   test-redis:
     container_name: test-redis
     image: redis:latest
@@ -42,7 +32,7 @@ services:
       - ../.:/usr/src/app
     entrypoint: >
       sh -c "
-      pytest tests/src/services/test_extra_msg.py
+      pytest tests/src/
       "
     depends_on:
       - test-redis

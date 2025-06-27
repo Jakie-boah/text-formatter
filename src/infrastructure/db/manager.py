@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import asyncpg
 
-from src.services.exceptions import ErrorMessages
+from src.application.services.exceptions import ErrorMessages
 
 
 class AsyncPGManager:

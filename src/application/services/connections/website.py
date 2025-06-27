@@ -1,7 +1,7 @@
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from markupsafe import Markup, escape
 
-from src.services.text import TextFormatter
+from src.application.services.text import TextFormatter
 
 env = Environment(
     loader=FileSystemLoader("src/templates"),

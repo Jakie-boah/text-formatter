@@ -1,4 +1,4 @@
-from src.services.text import TextFormatter
+from src.application.services.text import TextFormatter
 
 
 class Linkedin(TextFormatter):

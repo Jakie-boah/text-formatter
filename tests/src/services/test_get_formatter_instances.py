@@ -1,6 +1,6 @@
 import pytest
-from src.services.main import get_text_formatter
-from src.services.connections import (
+from src.application.services import get_text_formatter
+from src.application.services.connections import (
     VK,
     Facebook,
     Instagram,

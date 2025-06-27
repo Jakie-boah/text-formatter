@@ -3,7 +3,7 @@ import os
 import aiohttp
 from loguru import logger
 
-from src.models.feed import NewsFeed, SeoBoost, FeedPrompt
+from src.domain.models.feed import NewsFeed, SeoBoost, FeedPrompt
 
 FEED_BACKEND_URL = (
     os.getenv("PROD_URL", "https://api.neuron.expert/") + "newsfeed-backend/"

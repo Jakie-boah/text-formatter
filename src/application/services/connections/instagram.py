@@ -1,7 +1,7 @@
-from src.services.text import TextFormatter
+from src.application.services.text import TextFormatter
 
 
-class Telegram(TextFormatter):
+class Instagram(TextFormatter):
 
     MAX_LENGTH = 4000
 
@@ -19,29 +19,31 @@ class Telegram(TextFormatter):
 
     async def get_prompt(self) -> str:
 
-        telegram_prompt = await self.prompt_repository.get_prompt(
-            social="Telegram",
+        insta_prompt = await self.prompt_repository.get_prompt(
+            social="Instagram",
             format_type="newsfeed",
         )
-        telegram_prompt += self.extra_prompt
-        return telegram_prompt
+        insta_prompt += self.extra_prompt
+        return insta_prompt
 
 
-class TelegramArticle(Telegram):
+class InstagramArticle(Instagram):
     async def get_prompt(self) -> str:
-        telegram_prompt = await self.prompt_repository.get_prompt(
-            social="Telegram",
+
+        insta_prompt = await self.prompt_repository.get_prompt(
+            social="Instagram",
             format_type="article",
         )
-        telegram_prompt += self.extra_prompt
-        return telegram_prompt
+        insta_prompt += self.extra_prompt
+        return insta_prompt
 
 
-class TelegramVideo(Telegram):
+class InstagramVideo(Instagram):
     async def get_prompt(self) -> str:
-        telegram_prompt = await self.prompt_repository.get_prompt(
-            social="Telegram",
+
+        insta_prompt = await self.prompt_repository.get_prompt(
+            social="Instagram",
             format_type="video",
         )
-        telegram_prompt += self.extra_prompt
-        return telegram_prompt
+        insta_prompt += self.extra_prompt
+        return insta_prompt

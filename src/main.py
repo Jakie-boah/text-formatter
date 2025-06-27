@@ -1,11 +1,11 @@
 from loguru import logger
 
 from src.configs.logger import setup_logging
-from src.services.extra_msg import ExtraMsgService
-from src.services.main import get_text_formatter
-from src.models.news import FormattingData, NewsData
-from src.db.pool import get_db
-from src.services.feed_backend import FeedBackend
+from src.application.services.extra_msg import ExtraMsgService
+from src.application.services import get_text_formatter
+from src.domain.models.news import FormattingData, NewsData
+from src.infrastructure.db import get_db
+from src.application.services import FeedBackend
 
 setup_logging()
 

@@ -2,12 +2,11 @@ import faker
 import pytest
 from loguru import logger
 
-from src.services.exceptions import MaxCounterError
-from src.services.gpt import GPTRequests
-from src.models.news import NewsData, FormattingData
-from src.db.repository import PromptRepository
-from src.services.connections import *
-
+from src.application.services.exceptions import MaxCounterError
+from src.application.services.gpt import GPTRequests
+from src.domain.models.news import NewsData, FormattingData
+from src.infrastructure.db.repository import PromptRepository
+from src.application.services.connections import *
 fake = faker.Faker()
 
 

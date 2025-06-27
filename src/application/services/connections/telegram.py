@@ -1,7 +1,7 @@
-from src.services.text import TextFormatter
+from src.application.services.text import TextFormatter
 
 
-class VK(TextFormatter):
+class Telegram(TextFormatter):
 
     MAX_LENGTH = 4000
 
@@ -19,31 +19,29 @@ class VK(TextFormatter):
 
     async def get_prompt(self) -> str:
 
-        vk_prompt = await self.prompt_repository.get_prompt(
-            social="VK",
+        telegram_prompt = await self.prompt_repository.get_prompt(
+            social="Telegram",
             format_type="newsfeed",
         )
-        vk_prompt += self.extra_prompt
-        return vk_prompt
+        telegram_prompt += self.extra_prompt
+        return telegram_prompt
 
 
-class VKArticle(VK):
+class TelegramArticle(Telegram):
     async def get_prompt(self) -> str:
-
-        vk_prompt = await self.prompt_repository.get_prompt(
-            social="VK",
+        telegram_prompt = await self.prompt_repository.get_prompt(
+            social="Telegram",
             format_type="article",
         )
-        vk_prompt += self.extra_prompt
-        return vk_prompt
+        telegram_prompt += self.extra_prompt
+        return telegram_prompt
 
 
-class VKVideo(VK):
+class TelegramVideo(Telegram):
     async def get_prompt(self) -> str:
-
-        vk_prompt = await self.prompt_repository.get_prompt(
-            social="VK",
+        telegram_prompt = await self.prompt_repository.get_prompt(
+            social="Telegram",
             format_type="video",
         )
-        vk_prompt += self.extra_prompt
-        return vk_prompt
+        telegram_prompt += self.extra_prompt
+        return telegram_prompt

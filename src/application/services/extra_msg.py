@@ -3,9 +3,9 @@ from typing import TypeAlias
 
 from loguru import logger
 
-from src.models.feed import ExtraMsgData
-from src.services.exceptions import ErrorMessages
-from src.services.feed_backend import FeedBackend
+from src.domain.models.feed import ExtraMsgData
+from src.application.services.exceptions import ErrorMessages
+from src.application.services.feed_backend import FeedBackend
 
 ExtraMsg: TypeAlias = str
 

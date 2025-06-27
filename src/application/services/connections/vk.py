@@ -1,7 +1,7 @@
-from src.services.text import TextFormatter
+from src.application.services.text import TextFormatter
 
 
-class Instagram(TextFormatter):
+class VK(TextFormatter):
 
     MAX_LENGTH = 4000
 
@@ -19,31 +19,31 @@ class Instagram(TextFormatter):
 
     async def get_prompt(self) -> str:
 
-        insta_prompt = await self.prompt_repository.get_prompt(
-            social="Instagram",
+        vk_prompt = await self.prompt_repository.get_prompt(
+            social="VK",
             format_type="newsfeed",
         )
-        insta_prompt += self.extra_prompt
-        return insta_prompt
+        vk_prompt += self.extra_prompt
+        return vk_prompt
 
 
-class InstagramArticle(Instagram):
+class VKArticle(VK):
     async def get_prompt(self) -> str:
 
-        insta_prompt = await self.prompt_repository.get_prompt(
-            social="Instagram",
+        vk_prompt = await self.prompt_repository.get_prompt(
+            social="VK",
             format_type="article",
         )
-        insta_prompt += self.extra_prompt
-        return insta_prompt
+        vk_prompt += self.extra_prompt
+        return vk_prompt
 
 
-class InstagramVideo(Instagram):
+class VKVideo(VK):
     async def get_prompt(self) -> str:
 
-        insta_prompt = await self.prompt_repository.get_prompt(
-            social="Instagram",
+        vk_prompt = await self.prompt_repository.get_prompt(
+            social="VK",
             format_type="video",
         )
-        insta_prompt += self.extra_prompt
-        return insta_prompt
+        vk_prompt += self.extra_prompt
+        return vk_prompt

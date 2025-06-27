@@ -5,13 +5,13 @@ from typing import TYPE_CHECKING, Literal
 
 from loguru import logger
 
-from src.db.repository import PromptRepository
-from src.services.exceptions import ErrorMessages, MaxCounterError
-from src.services.gpt import GPTRequests
+from src.infrastructure.db.repository import PromptRepository
+from src.application.services.exceptions import ErrorMessages, MaxCounterError
+from src.application.services.gpt import GPTRequests
 
 if TYPE_CHECKING:
-    from src.db.manager import AsyncPGManager
-    from src.models.news import FormattingData, NewsData
+    from src.infrastructure.db.pool import AsyncPGManager
+    from src.domain.models.news import FormattingData, NewsData
 
 
 class TextAdapter:

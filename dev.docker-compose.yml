@@ -12,15 +12,6 @@ services:
       - formatter_logs:/usr/src/app/logs/formatting
       - celery_logs:/usr/src/app/logs/celery
 
-  formatter-celery-service:
-    build: .
-    container_name: formatter-celery-service
-    env_file:
-      - .env
-    command: celery --app=src.celery.configs.app worker -l INFO -B
-    volumes:
-      - ./:/usr/src/app
-
   redis:
     container_name: redis
     image: redis:latest

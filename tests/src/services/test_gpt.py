@@ -1,6 +1,6 @@
 import pytest
 
-from src.services.gpt import GPTRequests
+from src.application.services.gpt import GPTRequests
 
 
 @pytest.mark.asyncio

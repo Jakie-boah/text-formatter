@@ -1,7 +1,7 @@
 import pytest
 from loguru import logger
 
-from src.db.repository import PromptRepository
+from src.infrastructure.db.repository import PromptRepository
 
 
 @pytest.mark.asyncio

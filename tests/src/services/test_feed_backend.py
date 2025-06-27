@@ -1,5 +1,5 @@
 import pytest
-from src.services.feed_backend import FeedBackend
+from src.application.services.feed_backend import FeedBackend
 from loguru import logger
 
 

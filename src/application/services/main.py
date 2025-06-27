@@ -1,5 +1,5 @@
-from src.services import connections
-from src.services.text import TextFormatter
+from src.application.services import connections
+from src.application.services.text import TextFormatter
 
 _FORMATTER_MAP = {
     "text": {
