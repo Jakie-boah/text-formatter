@@ -1,18 +1,34 @@
 version: '3.8'
 
 services:
+  rabbitmq:
+    image: rabbitmq:3.12-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:-guest}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASS:-guest}
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: [ "CMD", "rabbitmq-diagnostics", "ping" ]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+
   test-formatter-service:
     container_name: test-formatter-service
     env_file:
       - ../.env
     build: ../.
-    command: uvicorn src.main:app --host 0.0.0.0 --port 8001 --reload
+    command: sh -c "python src/presentation/amqp_api_formatting/main.py"
     ports:
-      - "8001:8001"
+      - "8000:8000"
     volumes:
       - ../.:/usr/src/app
       - formatting_logs:/usr/src/app/logs/formatting
-      - celery_logs:/usr/src/app/logs/celery
 
   test-redis:
     container_name: test-redis
@@ -32,11 +48,11 @@ services:
       - ../.:/usr/src/app
     entrypoint: >
       sh -c "
-      pytest tests/src/
+      pytest -s tests/src/presentation/test_amqp_endpoints.py
       "
     depends_on:
       - test-redis
 
 volumes:
   formatting_logs:
-  celery_logs:
+  rabbitmq_data:

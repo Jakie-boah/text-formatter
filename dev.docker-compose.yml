@@ -5,12 +5,17 @@ services:
     container_name: formatter-service
     env_file:
       - .env
-    command: python3 src/main.py
+    command: sh -c "python src/presentation/amqp_api_formatting/main.py"
     build: .
     volumes:
       - ./:/usr/src/app
       - formatter_logs:/usr/src/app/logs/formatting
-      - celery_logs:/usr/src/app/logs/celery
+    ports:
+      - "8000:8000"
+    networks:
+      - shared_network  # <-- Добавляем в общую сеть
+    environment:
+      RABBITMQ_HOST: rabbitmq  # <-- Указываем имя сервиса RabbitMQ
 
   redis:
     container_name: redis
@@ -18,8 +23,12 @@ services:
     ports:
       - 6379:6379
     restart: always
-
+    networks:
+      - shared_network  # <-- Добавляем в общую сеть
 
 volumes:
   formatter_logs:
-  celery_logs:
+
+networks:
+  shared_network:  # <-- Подключаемся к той же сети
+    external: true
