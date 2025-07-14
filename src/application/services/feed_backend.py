@@ -3,7 +3,7 @@ import os
 import aiohttp
 from loguru import logger
 
-from src.domain.models.feed import NewsFeed, SeoBoost, FeedPrompt
+from src.domain.models.feed import FeedSeo, SeoBoost, FeedPrompt
 
 FEED_BACKEND_URL = (
     os.getenv("PROD_URL", "https://api.neuron.expert/") + "newsfeed-backend/"
@@ -26,7 +26,7 @@ ERROR_MSG = "Error {0}: {1}"
 
 class FeedBackend:
     @staticmethod
-    async def get_formatting_data_for_feed(*, feed_id: int) -> NewsFeed:
+    async def get_formatting_data_for_feed(*, feed_id: int) -> FeedSeo:
         url = f"{FEED_BACKEND_URL}/api/v1/feed/formatting/{feed_id}/"
 
         async with aiohttp.ClientSession() as session, session.get(
@@ -41,7 +41,7 @@ class FeedBackend:
                 if data["seo_boost"]:
                     seo = SeoBoost(**data["seo_boost"])
                 data.pop("seo_boost")
-                return NewsFeed(seo_boost=seo, **data)
+                return FeedSeo(seo_boost=seo, **data)
             text = await response.text()
             raise FeedBackendError(ERROR_MSG.format(response.status, text))
 

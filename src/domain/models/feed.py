@@ -8,7 +8,7 @@ class SeoBoost(BaseModel):
     static_url: str | None = None
 
 
-class NewsFeed(BaseModel):
+class FeedSeo(BaseModel):
     seo_boost: SeoBoost | None = None
     show_news_source: bool
     url_for_primary_connection: str | None = ""
@@ -30,5 +30,5 @@ class FeedPrompt(BaseModel):
 
 
 class ExtraMsgData(BaseModel):
-    feed_record: NewsFeed
+    feed_record: FeedSeo
     news_source: str | None = ""

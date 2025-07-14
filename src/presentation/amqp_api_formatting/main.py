@@ -7,7 +7,7 @@ from faststream.rabbit import RabbitBroker
 
 from src.configs.settings import Settings
 from src.infrastructure.ioc_container import (
-    # InteractorProvider,
+    InteractorProvider,
     RabbitProvider,
     SessionProvider,
     SettingsProvider,
@@ -22,7 +22,7 @@ async def application_factory():
         SettingsProvider(),
         RabbitProvider(),
         SessionProvider(),
-        # InteractorProvider(),
+        InteractorProvider(),
         context={Settings: Settings()},
     )
 
@@ -31,7 +31,7 @@ async def application_factory():
     broker.include_routers(endpoints)
     app = AsgiFastStream(
         broker,
-        title="СHIMERA-FORMATTING",
+        title="HIMMERA-FORMATTING",
         version="0.1",
         asyncapi_path="/docs",
         asgi_routes=[

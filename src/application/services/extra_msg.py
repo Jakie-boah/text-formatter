@@ -1,11 +1,10 @@
 from abc import ABC, abstractmethod
 from typing import TypeAlias
-
+from src.domain.models.feed import FeedSeo
 from loguru import logger
 
 from src.domain.models.feed import ExtraMsgData
 from src.application.services.exceptions import ErrorMessages
-from src.application.services.feed_backend import FeedBackend
 
 ExtraMsg: TypeAlias = str
 
@@ -70,14 +69,15 @@ class ExtraMsgSecondaryConnection(BaseExtraMsg):
 
 
 class ExtraMsgService:
-    def __init__(self, *, feed_id: int, main_connection: bool, news_source: str):
-        self.feed_id = feed_id
+    def __init__(self, *, feed: FeedSeo, main_connection: bool, news_source: str):
+        self.feed = feed
         self.main_connection = main_connection
         self.news_source = news_source
 
     async def build_msg(self) -> ExtraMsg:
-        feed = await FeedBackend.get_formatting_data_for_feed(feed_id=self.feed_id)
-        data = ExtraMsgData(feed_record=feed, news_source=self.news_source)
+        data = ExtraMsgData(feed_record=self.feed, news_source=self.news_source)
+
         if self.main_connection:
             return ExtraMsgMainConnection(data).build_msg()
+
         return ExtraMsgSecondaryConnection(data).build_msg()

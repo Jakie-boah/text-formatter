@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  formatter-service:
+  himmera-formatting:
     container_name: formatter-service
     env_file:
       - .env
@@ -13,9 +13,9 @@ services:
     ports:
       - "8000:8000"
     networks:
-      - shared_network  # <-- Добавляем в общую сеть
+      - shared_network
     environment:
-      RABBITMQ_HOST: rabbitmq  # <-- Указываем имя сервиса RabbitMQ
+      RABBITMQ_HOST: rabbitmq
 
   redis:
     container_name: redis
@@ -24,11 +24,11 @@ services:
       - 6379:6379
     restart: always
     networks:
-      - shared_network  # <-- Добавляем в общую сеть
+      - shared_network
 
 volumes:
   formatter_logs:
 
 networks:
-  shared_network:  # <-- Подключаемся к той же сети
+  shared_network:
     external: true

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from typing import Literal
-
+from src.domain.models.feed import FeedSeo
 from pydantic import BaseModel
 
 
@@ -39,3 +39,10 @@ class TaskExecutionData(BaseModel):
     @property
     def feed_title(self):
         return self.feed.get("feed_title")
+
+    @property
+    def feed_seo(self):
+        return FeedSeo(
+            seo_boost=self.feed.get("seo_boost"),
+            show_news_source=self.feed.get("show_news_source"),
+        )
